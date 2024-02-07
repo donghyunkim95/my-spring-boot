@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kitri.springbasicboot.lesson.MyBatis.mappers.TodoMapper">
+
+
+    <sql id="requestColumns">
+        id, content, done
+    </sql>
+
+    <sql id="responseColumns">
+        id, content, done, created_at as createdAt, modified_at as modifiedAt
+    </sql>
+
+    <resultMap id="todoResultMap" type="com.kitri.springbasicboot.lesson.MyBatis.dto.ResponseTodo">
+        <id property="id" column="id" />
+        <result property="content" column="content"/>
+        <result property="done" column="done"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="modifiedAt" column="modified_at"/>
+    </resultMap>
+
+<!--    <select id="findById" parameterType="Long" resultType="com.kitri.springbasicboot.lesson.MyBatis.dto.ResponseTodo">-->
+<!--        SELECT * FROM todo WHERE id = #{id}-->
+<!--    </select>-->
+    <!--    <select id="findAll" resultType="com.kitri.springbasicboot.lesson.mybatis.dto.ResponseTodo">-->
+    <!--        SELECT <include refid="responseColumns"/> FROM todo-->
+    <!--    </select>-->
+    <!--    <select id="findAll" resultMap="todoResultMap">-->
+    <!--        SELECT * FROM todo-->
+    <!--    </select>-->
+    <select id="findAll" resultType="com.kitri.springbasicboot.lesson.MyBatis.dto.ResponseTodo">
+        SELECT * FROM todo
+    </select>
+
+    <insert id="save" parameterType="com.kitri.springbasicboot.lesson.MyBatis.dto.RequestTodo">
+        INSERT INTO todo (
+          content, done
+        ) VALUES (
+        #{content}
+        , #{done}
+        )
+    </insert>
+
+    <select id="findById" parameterType="Long" resultType="com.kitri.springbasicboot.lesson.MyBatis.dto.ResponseTodo">
+        SELECT
+        <include refid="responseColumns" />
+        FROM
+        todo
+        WHERE
+        id = #{value}
+    </select>
+
+    <update id="update" parameterType="com.kitri.springbasicboot.lesson.MyBatis.dto.RequestTodo">
+        UPDATE todo
+        SET
+            done = #{done}
+        WHERE
+            id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Long">
+        DELETE
+        FROM
+            todo
+        WHERE
+            id = #{id}
+    </delete>
+
+</mapper>
